@@ -73,7 +73,7 @@ export class UsersService {
    throw new NotFoundException(`There isn't any user with id: ${id}`);
   }
 
-  await this.userRepository.remove(user);
+  await this.userRepository.delete(id)
 
   return user;
  }
