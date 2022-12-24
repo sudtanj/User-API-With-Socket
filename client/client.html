@@ -5,22 +5,17 @@
     <script>
         var socket = io("http://localhost:3000");
 
-        socket.on('users_list', function(data) {
+        socket.on('eventMemberUsers', function(data) {
             console.log(data)
-            addMessage(JSON.stringify(data));
+            addMessage(JSON.stringify(data, null, '\t'));
         });
 
         function addMessage(message) {
-            var text = document.createTextNode(message),
-                el = document.createElement('li'),
-                messages = document.getElementById('messages');
-
-            el.appendChild(text);
-            messages.appendChild(el);
+            document.getElementById('messages').textContent = message
         }
     </script>
 </head>
 <body>
-<ul id='messages'></ul>
+<pre id='messages'></pre>
 </body>
 </html>

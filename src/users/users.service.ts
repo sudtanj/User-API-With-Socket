@@ -8,6 +8,7 @@ import { UserUpdate } from './dto/user-update.dto';
 import { JwtPayload } from "./intefaces/jwt-payload.interface";
 
 import { ObjectID } from 'mongodb';
+import { UsersGateway } from "./users.gateway";
 
 @Injectable()
 export class UsersService {
@@ -15,12 +16,15 @@ export class UsersService {
   @InjectRepository(UsersEntity)
   private readonly userRepository: Repository<UsersEntity>,
   private readonly jwtService: JwtService,
+  private readonly usersGateway: UsersGateway
  ) {}
 
  async create(data: Partial<UsersEntity>): Promise<UsersEntity> {
   const user = this.userRepository.create(data);
+  const userResult = await this.userRepository.save(user)
+  await this.usersGateway.emitUsersList()
 
-  return this.userRepository.save(user);
+  return userResult;
  }
 
  async findAll(where: FindOneOptions<UsersEntity>) {
@@ -31,6 +35,8 @@ export class UsersService {
     `There isn't any user with identifier: ${where}`,
    );
   }
+
+  await this.usersGateway.emitUsersList()
 
   return user;
  }
@@ -58,9 +64,15 @@ export class UsersService {
    throw new NotFoundException(`There isn't any user with id: ${id}`);
   }
 
+  await this.usersGateway.emitUsersList()
+
   this.userRepository.merge(user, updates);
 
-  return this.userRepository.save(user);
+  const userResult = await this.userRepository.save(user);
+
+  await this.usersGateway.emitUsersList()
+
+  return userResult
  }
 
  async delete(id: string) {
@@ -74,6 +86,8 @@ export class UsersService {
   }
 
   await this.userRepository.delete(id)
+
+  await this.usersGateway.emitUsersList()
 
   return user;
  }
