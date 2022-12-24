@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
+    <script>
+        var socket = io("http://localhost:3000");
+
+        socket.on('users_list', function(data) {
+            console.log(data)
+            addMessage(JSON.stringify(data));
+        });
+
+        function addMessage(message) {
+            var text = document.createTextNode(message),
+                el = document.createElement('li'),
+                messages = document.getElementById('messages');
+
+            el.appendChild(text);
+            messages.appendChild(el);
+        }
+    </script>
+</head>
+<body>
+<ul id='messages'></ul>
+</body>
+</html>

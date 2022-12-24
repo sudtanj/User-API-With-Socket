@@ -11,6 +11,7 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { SessionSerializer } from "./session.serializer";
 import { LoginController } from "./login.controller";
 import { PasswordController } from "./password.controller";
+import { UsersGateway } from "./users.gateway";
 
 @Module({
  imports: [
@@ -28,7 +29,7 @@ import { PasswordController } from "./password.controller";
   }),
  ],
  controllers: [UsersController, LoginController, PasswordController],
- providers: [UsersService, IsUserAlreadyExist, LocalStrategy, JwtStrategy, SessionSerializer],
+ providers: [UsersService, IsUserAlreadyExist, LocalStrategy, JwtStrategy, SessionSerializer, UsersGateway],
  exports: [UsersService],
 })
 export class UsersModule {}
