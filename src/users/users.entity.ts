@@ -1,9 +1,11 @@
 import {
+ BaseEntity,
  BeforeInsert,
  BeforeUpdate,
  Column,
  CreateDateColumn,
  Entity,
+ ObjectID,
  ObjectIdColumn,
  UpdateDateColumn
 } from "typeorm";
@@ -16,10 +18,11 @@ export enum UserRole {
 }
 
 @Entity()
-export class UsersEntity {
- @ObjectIdColumn()
+export class UsersEntity extends BaseEntity {
+ @ObjectIdColumn({ name: 'id' })
  @ApiProperty({ description: 'mongo db id' })
- id: string;
+ id: ObjectID;
+
  @Column()
  @ApiProperty({ example: "John", description: 'name of the user' })
  name: string
@@ -38,10 +41,6 @@ export class UsersEntity {
  @UpdateDateColumn()
  updatedAt: Date;
 
- constructor(data: Partial<UsersEntity> = {}) {
-  Object.assign(this, data);
- }
-
  @BeforeInsert()
  @BeforeUpdate()
  async hashPassword(): Promise<void> {
@@ -55,3 +54,7 @@ export class UsersEntity {
   return await bcrypt.compare(plainPassword, this.password);
  }
 }
+function BeforeDelete() {
+    throw new Error("Function not implemented.");
+}
+

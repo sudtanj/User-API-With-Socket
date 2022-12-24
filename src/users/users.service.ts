@@ -7,6 +7,8 @@ import { UsersEntity } from './users.entity';
 import { UserUpdate } from './dto/user-update.dto';
 import { JwtPayload } from "./intefaces/jwt-payload.interface";
 
+import { ObjectID } from 'mongodb';
+
 @Injectable()
 export class UsersService {
  constructor(
@@ -37,16 +39,20 @@ export class UsersService {
   const user = await this.userRepository.findOne(where);
 
   if (!user) {
-   throw new NotFoundException(
-    `There isn't any user with identifier: ${where}`,
-   );
+   throw new NotFoundException({
+    message: `There isn't any user with identifier`,
+    whereCondition: where
+   });
   }
 
   return user;
  }
 
  async update(id: string, updates: UserUpdate): Promise<UsersEntity> {
-  const user = await this.userRepository.findOneBy({ id });
+  const user = await this.userRepository.findOneBy({
+   // @ts-ignore
+   _id: new ObjectID(id)
+  });
 
   if (!user) {
    throw new NotFoundException(`There isn't any user with id: ${id}`);
@@ -58,7 +64,10 @@ export class UsersService {
  }
 
  async delete(id: string) {
-  const user = await this.userRepository.findOneBy({ id });
+  const user = await this.userRepository.findOneBy({
+   // @ts-ignore
+   _id: new ObjectID(id)
+  });
 
   if (!user) {
    throw new NotFoundException(`There isn't any user with id: ${id}`);

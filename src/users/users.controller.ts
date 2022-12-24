@@ -8,6 +8,8 @@ import { RolesGuard } from "./guards/roles.guard";
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { UsersService } from "./users.service";
 import { ResponseFormatUtil } from "../utils/ResponseFormatUtil";
+import { ObjectID } from 'mongodb';
+import { UserUpdate } from "./dto/user-update.dto";
 
 @ApiBearerAuth()
 @Controller("/users")
@@ -37,7 +39,8 @@ export class UsersController {
  async detail(@Param("id") id: string) {
   return ResponseFormatUtil.success(await this.userService.findOne({
    where: {
-    id
+    // @ts-ignore
+    _id: new ObjectID(id)
    }
   }))
  }
@@ -57,7 +60,7 @@ export class UsersController {
  @ApiResponse({ status: HttpStatus.OK, description: 'Success.', type: UsersEntity })
  @ApiOperation({ summary: 'update existing user. admin can access!' })
  @Roles(UserRole.ADMIN)
- async update(@Param("id") id: string, @Body() body: UsersEntity) {
+ async update(@Param("id") id: string, @Body() body: UserUpdate) {
   return ResponseFormatUtil.success(await this.userService.update(id, body))
  }
 
