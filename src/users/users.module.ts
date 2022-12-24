@@ -9,6 +9,8 @@ import { JwtModule } from "@nestjs/jwt";
 import { LocalStrategy } from "./strategies/local.strategy";
 import { JwtStrategy } from "./strategies/jwt.strategy";
 import { SessionSerializer } from "./session.serializer";
+import { LoginController } from "./login.controller";
+import { PasswordController } from "./password.controller";
 
 @Module({
  imports: [
@@ -25,7 +27,7 @@ import { SessionSerializer } from "./session.serializer";
    },
   }),
  ],
- controllers: [UsersController],
+ controllers: [UsersController, LoginController, PasswordController],
  providers: [UsersService, IsUserAlreadyExist, LocalStrategy, JwtStrategy, SessionSerializer],
  exports: [UsersService],
 })

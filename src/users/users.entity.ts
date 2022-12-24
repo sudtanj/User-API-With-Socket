@@ -19,14 +19,16 @@ export enum UserRole {
 
 @Entity()
 export class UsersEntity extends BaseEntity {
- @ObjectIdColumn({ name: 'id' })
+ @ObjectIdColumn()
  @ApiProperty({ description: 'mongo db id' })
  id: ObjectID;
 
  @Column()
  @ApiProperty({ example: "John", description: 'name of the user' })
  name: string
- @Column()
+ @Column({
+  unique: true
+ })
  @ApiProperty({ example: "John@example.com", description: 'email of the user' })
  email: string
  @Column()

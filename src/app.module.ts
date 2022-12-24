@@ -5,7 +5,6 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UsersModule } from "./users/users.module";
 import { ConfigModule } from "@nestjs/config";
 import * as path from "path";
-import { LoginModule } from "./login/login.module";
 
 @Module({
   imports: [
@@ -18,8 +17,7 @@ import { LoginModule } from "./login/login.module";
       useNewUrlParser: true,
       logging: true,
     }),
-   UsersModule,
-   LoginModule
+   UsersModule
   ],
   controllers: [AppController],
   providers: [AppService],

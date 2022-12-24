@@ -1,8 +1,8 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { ApiOperation, ApiResponse } from "@nestjs/swagger";
-import { UsersEntity } from "../users/users.entity";
-import { SignInDto } from "../users/dto/sign-in.dto";
-import { UsersService } from "../users/users.service";
+import { UsersEntity } from "./users.entity";
+import { SignInDto } from "./dto/sign-in.dto";
+import { UsersService } from "./users.service";
 
 @Controller("/login")
 export class LoginController {

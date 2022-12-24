@@ -123,4 +123,27 @@ export class UsersService {
 
   return user;
  }
+
+ async updateUserPassword(email: string, newPassword: string) {
+  let user: UsersEntity
+
+  try {
+   user = await this.findOne({ where: { email: email } });
+  } catch (error) {
+   throw new UnauthorizedException(
+    `There isn't any user with email: ${email}`,
+   );
+  }
+  this.userRepository.merge(user, {
+   password: newPassword
+  });
+
+console.log(user)
+  console.log(newPassword)
+  const result = await this.userRepository.save(user)
+console.log(result)
+  delete result.password
+
+  return result
+ }
 }
