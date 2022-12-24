@@ -6,18 +6,18 @@ import {
 } from 'class-validator';
 import { Repository } from 'typeorm';
 
-import { User } from './user.entity';
+import { UsersEntity } from './users.entity';
 
 @ValidatorConstraint({ name: 'isUserAlreadyExist', async: true })
 @Injectable()
 export class IsUserAlreadyExist implements ValidatorConstraintInterface {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(UsersEntity)
+    private readonly userRepository: Repository<UsersEntity>,
   ) {}
 
   async validate(email: string): Promise<boolean> {
-    const user = await this.userRepository.findOneBy({ username: email });
+    const user = await this.userRepository.findOneBy({ email });
 
     return user === null || user === undefined;
   }

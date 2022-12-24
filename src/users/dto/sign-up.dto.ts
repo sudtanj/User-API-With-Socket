@@ -1,13 +1,7 @@
-import {
-  IsDefined,
-  IsNotEmpty,
-  IsEmail,
-  MinLength,
-  Validate, IsString, IsIn,
-} from 'class-validator';
+import { IsDefined, IsEmail, IsIn, IsNotEmpty, IsString, MinLength, Validate, } from 'class-validator';
 import { IsUserAlreadyExist } from '../is-user-already-exist.validator';
-import { Role } from "../role.enum";
 import { ApiProperty } from "@nestjs/swagger";
+import { UserRole } from "../users.entity";
 
 export class SignUp {
   @IsDefined()
@@ -30,7 +24,7 @@ export class SignUp {
 
   @IsDefined()
   @IsNotEmpty()
-  @IsIn(Object.values(Role))
+  @IsIn(Object.values(UserRole))
   @ApiProperty({ example: "admin", description: 'User role' })
-  readonly roles: Role;
+  readonly role: UserRole;
 }

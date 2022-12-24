@@ -5,6 +5,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { UsersEntity } from './users.entity';
 import { UserUpdate } from './dto/user-update.dto';
+import { JwtPayload } from "./intefaces/jwt-payload.interface";
 
 @Injectable()
 export class UsersService {
@@ -97,5 +98,20 @@ export class UsersService {
   }
 
   return this.jwtService.sign(payload);
+ }
+
+ async verifyPayload(payload: JwtPayload): Promise<UsersEntity> {
+  let user: UsersEntity
+
+  try {
+   user = await this.findOne({ where: { email: payload.sub } });
+  } catch (error) {
+   throw new UnauthorizedException(
+    `There isn't any user with email: ${payload.sub}`,
+   );
+  }
+  delete user.password;
+
+  return user;
  }
 }
