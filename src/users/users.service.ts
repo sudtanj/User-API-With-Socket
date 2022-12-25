@@ -36,7 +36,7 @@ export class UsersService {
    );
   }
 
-  await this.usersGateway.emitUsersList()
+  // await this.usersGateway.emitUsersList()
 
   return user;
  }
