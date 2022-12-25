@@ -10,6 +10,7 @@ import { UsersService } from "./users.service";
 import { ResponseFormatUtil } from "../utils/ResponseFormatUtil";
 import { ObjectID } from 'mongodb';
 import { UserUpdate } from "./dto/user-update.dto";
+import { Cache } from "nest-cache-decorator";
 
 @ApiBearerAuth()
 @Controller("/users")
@@ -36,7 +37,8 @@ export class UsersController {
  @ApiOperation({ summary: 'get detail of user. admin and user can access!' })
  @UseGuards(SessionAuthGuard, JWTAuthGuard, RolesGuard)
  @Roles(UserRole.ADMIN, UserRole.USER)
- async detail(@Param("id") id: string) {
+ @Cache({ ttl: 600 })
+ async detailUser(@Param("id") id: string) {
   return ResponseFormatUtil.success(await this.userService.findOne({
    where: {
     // @ts-ignore

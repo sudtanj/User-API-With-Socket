@@ -5,9 +5,23 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UsersModule } from "./users/users.module";
 import { ConfigModule } from "@nestjs/config";
 import * as path from "path";
+import { CacheDecoratorModule } from "nest-cache-decorator";
 
 @Module({
   imports: [
+    CacheDecoratorModule.forRoot({
+      application: {
+        version: "1.0",
+        name: "user-api-with-socket"
+      },
+      redis: {
+        host: process.env.REDIS_HOST, // your redis host env variable,
+        port:  Number.parseInt(process.env.REDIS_PORT), // your redis port env variable
+        password: process.env.REDIS_PASSWORD,
+        username: process.env.REDIS_USER
+      },
+      isGlobal: true,
+    }),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: "mongodb",
@@ -17,7 +31,7 @@ import * as path from "path";
       useNewUrlParser: true,
       logging: true,
     }),
-   UsersModule
+   UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
