@@ -50,7 +50,7 @@ export class UsersController {
  @ApiResponse({ status: HttpStatus.CREATED, description: 'Success.', type: UsersEntity })
  @ApiOperation({ summary: 'create new user. admin can access!' })
  @UseGuards(SessionAuthGuard, JWTAuthGuard, RolesGuard)
- @Roles(UserRole.ADMIN)
+ @Roles(UserRole.ADMIN, UserRole.USER)
  async register(@Body() signUp: SignUp) {
   return ResponseFormatUtil.success(await this.userService.create(signUp))
  }
