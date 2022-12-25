@@ -10,6 +10,7 @@ import { Logger } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UsersEntity } from "./users.entity";
 import { Repository } from "typeorm";
+import { JwtService } from "@nestjs/jwt";
 
 @WebSocketGateway({ cors: { origin: "*" } })
 export class UsersGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
@@ -18,6 +19,11 @@ export class UsersGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
  private logger: Logger = new Logger('AppGateway');
  @InjectRepository(UsersEntity)
  private readonly userRepository: Repository<UsersEntity>
+
+ constructor(
+  private readonly jwtService: JwtService,
+ ) {
+ }
 
  afterInit(server: Server) {
   this.logger.log('Init');
@@ -28,6 +34,20 @@ export class UsersGateway implements OnGatewayInit, OnGatewayConnection, OnGatew
  }
 
  async handleConnection(client: Socket, ...args: any[]) {
+  const userToken: string | undefined = client.handshake.headers.authorization
+  if  (typeof userToken !== 'string' || userToken.length === 0) {
+   client.emit('error', 'authentication error');
+   client.disconnect(true)
+   return;
+  }
+  try {
+   this.jwtService.verify(userToken.split(" ")[1])
+  } catch (e) {
+   client.emit('error', 'authentication error! invalid token');
+   client.disconnect(true)
+   this.logger.log(e)
+   return;
+  }
   client.emit("eventMemberUsers", await this.getUsersList())
   this.logger.log(`Client connected: ${client.id}`);
  }

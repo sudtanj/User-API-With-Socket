@@ -3,12 +3,27 @@
 <head>
     <script src="https://cdn.socket.io/4.5.4/socket.io.min.js" integrity="sha384-/KNQL8Nu5gCHLqwqfQjA689Hhoqgi2S84SNUxC3roTe4EhJ9AfLkp8QiQcU8AMzI" crossorigin="anonymous"></script>
     <script>
-        var socket = io("http://localhost:3000");
+        // modified this variable to change the user token for authentication
+        const userToken = "eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBwcmltYWt1LmNvbSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY3MTg3MjU0MCwiZXhwIjoxNjcxOTU4OTQwfQ.lSu4fcQugbwUegUXB1onde4kWTXfURuSnPCU0KoxBura15WkLSDq7sB2b8RsqWA5"
+        const socketOptions = {
+            transportOptions: {
+                polling: {
+                    extraHeaders: {
+                        Authorization: `Bearer ${userToken}`, //'Bearer h93t4293t49jt34j9rferek...'
+                    }
+                }
+            }
+        };
+        var socket = io("http://localhost:3000", socketOptions);
 
         socket.on('eventMemberUsers', function(data) {
             console.log(data)
             addMessage(JSON.stringify(data, null, '\t'));
         });
+
+        socket.on('error', (data) => {
+            console.error(data)
+        })
 
         function addMessage(message) {
             document.getElementById('messages').textContent = message
