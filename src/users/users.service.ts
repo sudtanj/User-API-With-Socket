@@ -152,10 +152,8 @@ export class UsersService {
    password: newPassword
   });
 
-console.log(user)
-  console.log(newPassword)
   const result = await this.userRepository.save(user)
-console.log(result)
+
   delete result.password
 
   return result
