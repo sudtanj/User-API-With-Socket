@@ -22,6 +22,10 @@ PUT: /api/password (update password)
 Client can also subscribed to an event using websocket by listening to event name `eventMemberUsers` on port 3000.
 You can try the websocket by opening the client example at folder /client
 
+## Postman Documentation
+You can import the postman collection using the following json link
+[Postman JSON Collection](https://api.postman.com/collections/24756256-09ee5f4a-d2e3-46d0-a96b-5a2062e94949?access_key=PMAT-01GNDQTGWG69MWJ81CJQCPK4K0)
+
 ## Migration and Seeding Database
 The following command with created the user with admin role on the database.
 ```bash
