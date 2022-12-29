@@ -2,7 +2,25 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+The app will consist the following user model attributes:
+```
+name
+email (unique)
+password 
+role (admin or member)
+```
+The api provided will be :
+```
+GET: /api/users (return list of available users)
+POST: /api/users (create a new user). User attributes are
+GET: /api/users/:id (get a user by id)
+DELETE: /api/users/:id (hard delete user)
+POST: /api/login (send login request, pass email and password, and get JWT token)
+PATCH: /api/users/:id (update name, email, role)
+PUT: /api/password (update password)
+```
+Client can also subscribed to an event using websocket by listening to event name `eventMemberUsers` on port 3000.
+You can try the websocket by opening the client example at folder /client
 
 ## Migration and Seeding Database
 The following command with created the user with admin role on the database.
