@@ -11,6 +11,7 @@ import {
 } from "typeorm";
 import { ApiProperty } from "@nestjs/swagger";
 import * as bcrypt from 'bcrypt';
+import { Type } from "class-transformer";
 
 export enum UserRole {
  ADMIN = "admin",
@@ -20,7 +21,10 @@ export enum UserRole {
 @Entity()
 export class UsersEntity extends BaseEntity {
  @ObjectIdColumn()
- @ApiProperty({ description: 'mongo db id' })
+ @ApiProperty({
+  description: 'mongo db id',
+  enum: () => ObjectID
+ })
  id: ObjectID;
 
  @Column()
